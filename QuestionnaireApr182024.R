@@ -11,7 +11,7 @@ library("readxl")
 df <-read_excel("CGHP_21_62.xlsx")
 names(df)
 #test test
-
+#test 
 ##########################################
 # Extract each questionnaires based on questions
 # Everyday Discrimination (EDS)
