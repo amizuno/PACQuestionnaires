@@ -10,8 +10,7 @@ setwd(main_path)
 library("readxl")
 df <-read_excel("CGHP_21_62.xlsx")
 names(df)
-#test test
-#test 
+
 ##########################################
 # Extract each questionnaires based on questions
 # Everyday Discrimination (EDS)
@@ -610,14 +609,129 @@ for(i in 1:nrow(CSE_identity)){
 }
 
 df_all <- cbind(df_all, member_CSE,private_CSE,public_CSE,identity_CSE)
-##########################################
+####################################################################################
 # Satisfaction with Life Scale (SWLS)
+#
+# 5-item (no reverse scoring)
+# 1-7 likert scale
+####################################################################################
+desired_columns <- grep("Below are five statements that you may agree or disagree with. |ID", colnames(df), value = TRUE)
+
+# Subset the dataframe using the list of column names
+df_SWLS <- data.frame(df[, desired_columns, drop = FALSE])
+names(df_SWLS) <- c("ID","Q1", "Q2", "Q3", "Q4", "Q5")
+
+all_values <- c(df_SWLS$Q1,df_SWLS$Q2,df_SWLS$Q3,df_SWLS$Q4,df_SWLS$Q5)
+unique_values <- unique(all_values)
+print(unique_values)
+
+#scoring
+LEVELS = c("Strongly Disagree",
+           "Disagree",
+           "Slightly Disagree",
+           "Neither Agree nor Disagree",
+           "Slightly Agree",
+           "Agree",
+           "Strongly Agree")
+
+df_n = data.frame(matrix(ncol = 6, nrow = 42))
+
+for(i in 1:6){
+  df_n[,i] = as.numeric(factor(df_SWLS[, i], levels =LEVELS)) #positive LEVEL
+}
+df_n[1] <- df_SWLS$ID
+names(df_n) <- c("ID","Q1","Q2", "Q3", "Q4", "Q5")
+
+#Calculate Sum (total)
+SWLSSum <- 0
+for(i in 1:nrow(df_n)){
+  SWLSSum[i] = sum(df_n[i, 2:6])
+}
+
+df_SWLS <- cbind(df_n, SWLSSum)
+
+# Create a histogram of EDS scores (total scores)
+mean(df_SWLS$SWLSSum,na.rm = TRUE)
+sd(df_SWLS$SWLSSum, na.rm = TRUE)
+#22.95122, 6.870048
+
+plot_SWLS <- ggplot(data = data.frame(df_SWLS = SWLSSum), aes(x = df_SWLS)) +
+  geom_histogram(breaks = seq(0, 40, by = 5),binwidth = 5, fill = "steelblue", color = "white") +
+  labs(
+    title = "Satisfaction with Life Scale (SWLS) ",
+    subtitle = "Range 5-35",
+    x = "mean = 22.95 (sd = 6.87) ",
+    y = "Frequency"
+  )
+print(plot_SWLS)
+
+#df_all <- cbind(df_all, df_SWLS[77])
+
+####################################################################################
+# Multidimensional Scale of Perceived Social Support (MSPSS)
+# 
+# 12-item, 7-point Likert scale (1=very strongly disagree, 7=svery trongly agree)
+# Subscales
+#       1. Significant Other: Q1, 2, 5, 10  (sum then divide by 4)
+#       2. Family:            Q3, 4, 8, 11  (sum then divide by 4)
+#       3. Friends:           Q6, 7, 9, 12  (sum then divide by 4)
+####################################################################################
+
+desired_columns <- grep("Instructions: We are interested in how you feel about the following statements |ID", colnames(df), value = TRUE)
+
+# Subset the dataframe using the list of column names
+df_SWLS <- data.frame(df[, desired_columns, drop = FALSE])
+names(df_SWLS) <- c("ID","Q1", "Q2", "Q3", "Q4", "Q5")
+
+all_values <- c(df_SWLS$Q1,df_SWLS$Q2,df_SWLS$Q3,df_SWLS$Q4,df_SWLS$Q5)
+unique_values <- unique(all_values)
+print(unique_values)
+
+#scoring
+LEVELS = c("Strongly Disagree",
+           "Disagree",
+           "Slightly Disagree",
+           "Neither Agree nor Disagree",
+           "Slightly Agree",
+           "Agree",
+           "Strongly Agree")
+
+df_n = data.frame(matrix(ncol = 6, nrow = 42))
+
+for(i in 1:6){
+  df_n[,i] = as.numeric(factor(df_SWLS[, i], levels =LEVELS)) #positive LEVEL
+}
+df_n[1] <- df_SWLS$ID
+names(df_n) <- c("ID","Q1","Q2", "Q3", "Q4", "Q5")
+
+#Calculate Sum (total)
+SWLSSum <- 0
+for(i in 1:nrow(df_n)){
+  SWLSSum[i] = sum(df_n[i, 2:6])
+}
+
+df_SWLS <- cbind(df_n, SWLSSum)
+
+# Create a histogram of EDS scores (total scores)
+mean(df_SWLS$SWLSSum,na.rm = TRUE)
+sd(df_SWLS$SWLSSum, na.rm = TRUE)
+#22.95122, 6.870048
+
+plot_SWLS <- ggplot(data = data.frame(df_SWLS = SWLSSum), aes(x = df_SWLS)) +
+  geom_histogram(breaks = seq(0, 40, by = 5),binwidth = 5, fill = "steelblue", color = "white") +
+  labs(
+    title = "Satisfaction with Life Scale (SWLS) ",
+    subtitle = "Range 5-35",
+    x = "mean = 22.95 (sd = 6.87) ",
+    y = "Frequency"
+  )
+print(plot_SWLS)
+
+#df_all <- cbind(df_all, df_SWLS[77])
+
 
 ##########################################
-# RMultidimensional Scale of Perceived Social Support (MSPSS)
-
-##########################################
-# CHronic Strains
+# Chronic Strains
 
 
 
