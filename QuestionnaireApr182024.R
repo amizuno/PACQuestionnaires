@@ -14,7 +14,7 @@ names(df)
 ##########################################
 # Extract each questionnaires based on questions
 # Everyday Discrimination (EDS)
-# (no subscales)
+# (no subscales, no reverse coding)
 ##########################################
 
 # Assuming df is your dataframe containing your data
@@ -102,7 +102,6 @@ for(i in 1:nrow(z)){
   row_sums_C[i] = sum(z[i, 2:10])
 }
 z <- cbind(z, row_sums_C)
-z <- z[,-13]
 
 mean(z$row_sums_C)
 sd(z$row_sums_C)
@@ -124,8 +123,8 @@ sd(df_f$row_sums)
 
 ##
 # z --> make it to one data frame for later
-df_all <- z[,c(1,12,13)]
-names(df_all) <- c("ID","EDS_total", "EDS_ChroTotal")
+df_all <- z[,c(1,11:13)]
+names(df_all) <- c("ID","EDS_Reason","EDS_total", "EDS_ChroTotal")
 
 #Q12chr variables --> redefine as a factor
 # histograms  
@@ -257,7 +256,6 @@ plot_WB <- ggplot(data = data.frame(df_WB = WellBeingSum), aes(x = df_WB)) +
   )
 print(plot_WB)
 
-df_all <- df_all[, 1:3]
 df_all <- cbind(df_all, df_WB[17])
 
 # Calculate subscales
@@ -299,6 +297,76 @@ for(i in 1:nrow(WellBeing_dfCoher)){
 
 df_all <- cbind(df_all, WB_Integ,WB_Acce,WB_Contri,WB_Actua,WB_Coher)
 
+mean(WB_Integ,na.rm = TRUE)
+sd(WB_Integ, na.rm = TRUE)
+#14.80488, 14.80488
+plot_WB <- ggplot(df_all, aes(x = WB_Integ)) +
+  geom_histogram(binwidth = 2,fill = "steelblue", color = "white") +
+  labs(
+    title = "Social Well-Being Scale (SWBS)",
+    subtitle = "Social Integration",
+    x = "mean = 14.80 (sd = 4.15) ",
+    y = "Frequency"
+  ) +
+  ylim(min=0, 15)+
+  xlim(min=0, max=30 )
+print(plot_WB)
+
+mean(WB_Acce,na.rm = TRUE)
+sd(WB_Acce, na.rm = TRUE)
+plot_WB <- ggplot(df_all, aes(x = WB_Acce)) +
+  geom_histogram(binwidth = 2,fill = "steelblue", color = "white") +
+  labs(
+    title = "Social Well-Being Scale (SWBS)",
+    subtitle = "Social Acceptance",
+    x = "mean = 13.00 (sd = 2.24) ",
+    y = "Frequency"
+  ) +
+  ylim(min=0, 15)+
+  xlim(min=0, max=30 )
+print(plot_WB)
+
+mean(WB_Contri,na.rm = TRUE)
+sd(WB_Contri, na.rm = TRUE)
+plot_WB <- ggplot(df_all, aes(x = WB_Contri)) +
+  geom_histogram(binwidth = 2,fill = "steelblue", color = "white") +
+  labs(
+    title = "Social Well-Being Scale (SWBS)",
+    subtitle = "Social Contribution",
+    x = "mean = 16.83 (sd = 2.89) ",
+    y = "Frequency"
+  ) +
+  ylim(min=0, 15)+
+  xlim(min=0, max=30 )
+print(plot_WB)
+
+mean(WB_Actua,na.rm = TRUE)
+sd(WB_Actua, na.rm = TRUE)
+plot_WB <- ggplot(df_all, aes(x = WB_Actua)) +
+  geom_histogram(binwidth = 2,fill = "steelblue", color = "white") +
+  labs(
+    title = "Social Well-Being Scale (SWBS)",
+    subtitle = "Social Actualization",
+    x = "mean = 12.39 (sd = 3.06) ",
+    y = "Frequency"
+  ) +
+  ylim(min=0, 15)+
+  xlim(min=0, max=30 )
+print(plot_WB)
+
+mean(WB_Coher,na.rm = TRUE)
+sd(WB_Coher, na.rm = TRUE)
+plot_WB <- ggplot(df_all, aes(x = WB_Coher)) +
+  geom_histogram(binwidth = 2,fill = "steelblue", color = "white") +
+  labs(
+    title = "Social Well-Being Scale (SWBS)",
+    subtitle = "Social Coherence",
+    x = "mean = 11.76 (sd = 3.15) ",
+    y = "Frequency"
+  ) +
+  ylim(min=0, 15)+
+  xlim(min=0, max=30 )
+print(plot_WB)
 ########################################################################################################################################################################
 # Race in Context (RiC)
 #
@@ -416,16 +484,16 @@ AveSameRace_quali <- 0
 AveDiffRace_quali <- 0
 
 for(i in 1:nrow(RiC_df2)){
-  AveSameRace_freq[i] = sum(RiC_df2[i, c("Q3","Q5","Q7")])/3
+  AveSameRace_freq[i] = round(sum(RiC_df2[i, c("Q3","Q5","Q7")])/3,2)
 }
 for(i in 1:nrow(RiC_df2)){
-  AveDiffRace_freq[i] = sum(RiC_df2[i, c("Q4","Q6","Q8")])/3
+  AveDiffRace_freq[i] = round(sum(RiC_df2[i, c("Q4","Q6","Q8")])/3,2)
 }
 for(i in 1:nrow(RiC_df2)){
-  AveSameRace_quali[i] = sum(RiC_df2[i, c("Q3a","Q5a","Q7a")])/3
+  AveSameRace_quali[i] = round(sum(RiC_df2[i, c("Q3a","Q5a","Q7a")])/3,2)
 }
 for(i in 1:nrow(RiC_df2)){
-  AveDiffRace_quali[i] = sum(RiC_df2[i, c("Q4a","Q6a","Q8a")])/3
+  AveDiffRace_quali[i] = round(sum(RiC_df2[i, c("Q4a","Q6a","Q8a")])/3,2)
 }
 
 RiC_df2 <- cbind(RiC_df2, AveSameRace_freq,AveDiffRace_freq,AveSameRace_quali,AveDiffRace_quali)
@@ -551,19 +619,116 @@ print(plot_Q7)
 
 # Plot histgrams for quantity Different Race [Leisure, Work/Schoo, Online]
 mean(RiC_df2$Q4,na.rm = TRUE)
-sd(AveDiffRace_quali, na.rm = TRUE)
-#3.747967, 0.6573536
-plot_RiC_DiffRace_quali <- ggplot(RiC_df2, aes(x = AveDiffRace_quali)) +
-  geom_histogram(breaks = seq(1, 5, by = 0.5), fill = "steelblue", color = "white") +
+sd(RiC_df2$Q4, na.rm = TRUE)
+#6.357143, 1.778207
+plot_RiCQ4 <- ggplot(RiC_df2, aes(x = Q4)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
   labs(
-    title = "What is the quality of the interaction? (Different Race)",
-    subtitle = "Range 1: Poor -- 5: Excellent",
-    x = "mean = 3.75 (sd = 0.66) ",
+    title = "How often did you spend free time with people of races other than your own? ",
+    subtitle = "Leisure or Free time",
+    x = "mean = 6.36 (sd = 1.78) ",
+    y = "Frequency"
+  ) +
+  ylim(min = 0, max = 20)+
+  xlim(min = 0, max = 10)
+print(plot_RiCQ4)
+
+mean(RiC_df2$Q6,na.rm = TRUE)
+sd(RiC_df2$Q6, na.rm = TRUE)
+#6.97619, 1.505892
+plot_RiCQ6 <- ggplot(RiC_df2, aes(x = Q6)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
+  labs(
+    title = "How often did you work closely with people of races other than your own? ",
+    subtitle = "Work or School",
+    x = "mean = 6.98 (sd = 1.51) ",
+    y = "Frequency"
+  ) +
+  ylim(min = 0, max = 20)+
+  xlim(min = 0, max = 10)
+print(plot_RiCQ6)
+
+mean(RiC_df2$Q8,na.rm = TRUE)
+sd(RiC_df2$Q8, na.rm = TRUE)
+#4.97619, 1.814415
+plot_RiCQ8 <- ggplot(RiC_df2, aes(x = Q8)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
+  labs(
+    title = "How often did you ___ with people of races other than your own? ",
+    subtitle = "social media or online spaces",
+    x = "mean = 4.98 (sd = 1.81) ",
+    y = "Frequency"
+  ) +
+  ylim(min = 0, max = 20)+
+  xlim(min = 0, max = 10)
+print(plot_RiCQ8)
+
+### quality
+mean(RiC_df2$Q3a,na.rm = TRUE)
+sd(RiC_df2$Q3a, na.rm = TRUE)
+#4, 0.8553989
+
+plot_Q3a <- ggplot(RiC_df2, aes(x = Q3a)) +
+  geom_histogram(breaks = seq(1, 5, by = 0.5),  fill = "steelblue", color = "white") +
+  #  scale_x_continuous(breaks = c(0, 5, 10, 20)) +
+  labs(
+    title = "Q3a: What is the quality of the interaction?",
+    subtitle = "Same Race, leisure or free time",
+    x = "mean = 4.00 (sd = 0.86) ",
+    y = "Frequency"
+  ) +
+   ylim(min = 0, max = 20)+
+   xlim(min = 1, max = 5)
+print(plot_Q3a)
+
+plot_Q5a <- ggplot(RiC_df2, aes(x = Q5a)) +
+  geom_histogram(breaks = seq(1, 5, by = 0.5),  fill = "steelblue", color = "white") +
+  #  scale_x_continuous(breaks = c(0, 5, 10, 20)) +
+  labs(
+    title = "Q3a: What is the quality of the interaction?",
+    subtitle = "Same Race, school or work",
+#    x = "mean = 4.00 (sd = 0.86) ",
     y = "Frequency"
   ) +
   ylim(min = 0, max = 20)+
   xlim(min = 1, max = 5)
-print(plot_RiC_DiffRace_quali)
+print(plot_Q5a)
+
+plot_Q7a <- ggplot(RiC_df2, aes(x = Q7a)) +
+  geom_histogram(breaks = seq(1, 5, by = 0.5),  fill = "steelblue", color = "white") +
+  #  scale_x_continuous(breaks = c(0, 5, 10, 20)) +
+  labs(
+    title = "Q3a: What is the quality of the interaction?",
+    subtitle = "Same Race, social media or online",
+    #    x = "mean = 4.00 (sd = 0.86) ",
+    y = "Frequency"
+  ) +
+  ylim(min = 0, max = 20)+
+  xlim(min = 1, max = 5)
+print(plot_Q7a)
+
+plot_Q8a <- ggplot(RiC_df2, aes(x = Q8a)) +
+  geom_histogram(breaks = seq(1, 5, by = 0.5),  fill = "steelblue", color = "white") +
+  #  scale_x_continuous(breaks = c(0, 5, 10, 20)) +
+  labs(
+    title = "What is the quality of the interaction?",
+    subtitle = "Different Race, social media or online",
+    #    x = "mean = 4.00 (sd = 0.86) ",
+    y = "Frequency"
+  ) +
+  ylim(min = 0, max = 20)+
+  xlim(min = 1, max = 5)
+print(plot_Q8a)
+
+# Compute the % f sane race good friends Q2/Q1
+
+RiC_df2$Q2_over_Q1 <- round((RiC_df2$Q2 / RiC_df2$Q1),2)
+names(RiC_df2) <- c("ID","Q1","Q2","RiC_Q3","RiC_Q4","RiC_Q5","RiC_Q6","RiC_Q7","RiC_Q8","RiC_Q3a","RiC_Q4a",
+                    "RiC_Q5a","RiC_Q6a","RiC_Q7a","RiC_Q8a", 
+                    "RiC_Same_freq","RiC_Diff_freq" ,"RiC_Same_quali","RiC_Diff_quali","RiC_Q2_over_Q1")
+
+df_all <- cbind(df_all, RiC_df2[,c(4:20)])
+
 ####################################################################################
 # Collective Self-Esteem (CSE)
 # https://www.asc.ohio-state.edu/psychology/crockerlab/cse.php
@@ -576,6 +741,62 @@ print(plot_RiC_DiffRace_quali)
 # Items 3, 7, 11, and 15 = Public collective self-esteem.
 # Items 4, 8, 12, and 16 = Importance to Identity.
 ####################################################################################
+desired_columns <- c("Participant ID:",
+                    "I am a worthy member of my race/ethnic group.",
+                    "I often regret that I belong to my racial/ethnic group.",
+                    "Overall, my racial/ethnic group is considered good by others.",
+                    "Overall, my race/ethnicity has very little to do with how I feel about myself.",
+                    "I feel I don't have much to offer to my racial/ethnic group.",
+                    "In general, I'm glad to be a member of my racial/ethnic group.",
+                    "Most people consider my racial/ethnic group, on the average, to be more ineffective than other groups.",
+                    "The racial/ethnic group I belong to is an important reflection of who I am.",
+                    "I am a cooperative participant in the activities of my racial/ethnic group.",
+                    "Overall, I often feel that my racial/ethnic group is not worthwhile.",
+                    "In general, others respect my race/ethnicity.",
+                    "My race/ethnicity is unimportant to my sense of what kind of person I am.",
+                    "I often feel I'm a useless member of my racial/ethnic group.",
+                    "I feel good about the race/ethnicity I belong to.",
+                    "In general, others think that my racial/ethnic group is unworthy.",
+                    "In general, belonging to my race/ethnicity is an important part of my self image.")
+
+
+# Subset the dataframe using the list of column names
+df_CSE <- data.frame(df[, desired_columns, drop = FALSE])
+names(df_CSE) <- c("ID","Q1", "Q2", "Q3", "Q4", "Q5","Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12",
+                    "Q13", "Q14", "Q15","Q16")
+
+all_values <- c(df_CSE$Q1,df_CSE$Q2,df_CSE$Q3,df_CSE$Q4,df_CSE$Q5,df_CSE$Q6,df_CSE$Q7,df_CSE$Q8,df_CSE$Q9,df_CSE$Q10,
+                df_CSE$Q11,df_CSE$Q12,df_CSE$Q13,df_CSE$Q14,df_CSE$Q15,df_CSE$Q16)
+unique_values <- unique(all_values)
+print(unique_values)
+
+#scoring
+LEVELS = c("1 - Strongly Disagree",
+           "2 - Disagree",
+           "3 - Disagree Somewhat",
+           "4 - Neutral",
+           "5 - Agree Somewhat",
+           "6 - Agree",
+           "7 - Strongly Agree")
+
+df_n = data.frame(matrix(ncol = 17, nrow = 42))
+
+for(i in 2:17){
+  df_n[,i] = as.numeric(factor(df_CSE[, i], levels =LEVELS)) #positive LEVEL
+}
+df_n[1] <- df_CSE$ID
+names(df_n) <- c("ID","Q1", "Q2", "Q3", "Q4", "Q5","Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12",
+                 "Q13", "Q14", "Q15","Q16")
+
+#Calculate Sum (total)
+SWLSSum <- 0
+for(i in 1:nrow(df_n)){
+  SWLSSum[i] = sum(df_n[i, 2:6])
+}
+
+df_SWLS <- cbind(df_n, SWLSSum)
+
+
 df_all <- cbind(df_all, CSESum)
 
 # Calculate subscales
@@ -671,68 +892,193 @@ print(plot_SWLS)
 # Multidimensional Scale of Perceived Social Support (MSPSS)
 # 
 # 12-item, 7-point Likert scale (1=very strongly disagree, 7=svery trongly agree)
+# total score = sum then divide by 12
 # Subscales
 #       1. Significant Other: Q1, 2, 5, 10  (sum then divide by 4)
 #       2. Family:            Q3, 4, 8, 11  (sum then divide by 4)
 #       3. Friends:           Q6, 7, 9, 12  (sum then divide by 4)
 ####################################################################################
-
-desired_columns <- grep("Instructions: We are interested in how you feel about the following statements |ID", colnames(df), value = TRUE)
+desired_columns <- grep("Instructions: We are interested in how you feel about |ID", colnames(df), value = TRUE)
 
 # Subset the dataframe using the list of column names
-df_SWLS <- data.frame(df[, desired_columns, drop = FALSE])
-names(df_SWLS) <- c("ID","Q1", "Q2", "Q3", "Q4", "Q5")
+df_MSPSS <- data.frame(df[, desired_columns, drop = FALSE])
+names(df_MSPSS) <- c("ID","Q1", "Q2", "Q3", "Q4", "Q5","Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12")
 
-all_values <- c(df_SWLS$Q1,df_SWLS$Q2,df_SWLS$Q3,df_SWLS$Q4,df_SWLS$Q5)
+all_values <- c(df_MSPSS$Q1,df_MSPSS$Q2,df_MSPSS$Q3,df_MSPSS$Q4,df_MSPSS$Q5,
+                df_MSPSS$Q6,df_MSPSS$Q7,df_MSPSS$Q8,df_MSPSS$Q9,df_MSPSS$Q10,
+                df_MSPSS$Q11,df_MSPSS$Q12)
 unique_values <- unique(all_values)
 print(unique_values)
 
 #scoring
-LEVELS = c("Strongly Disagree",
-           "Disagree",
-           "Slightly Disagree",
-           "Neither Agree nor Disagree",
-           "Slightly Agree",
-           "Agree",
-           "Strongly Agree")
+LEVELS = c("Very Strongly Disagree",
+           "Strongly Disagree",
+           "Mildly Disagree",
+           "Neutral",
+           "Mildly Agree",
+           "Strongly Agree",
+           "Very Strongly Agree")
 
-df_n = data.frame(matrix(ncol = 6, nrow = 42))
+df_n = data.frame(matrix(ncol = 13, nrow = 42))
 
-for(i in 1:6){
-  df_n[,i] = as.numeric(factor(df_SWLS[, i], levels =LEVELS)) #positive LEVEL
+for(i in 1:13){
+  df_n[,i] = as.numeric(factor(df_MSPSS[, i], levels =LEVELS)) #positive LEVEL
 }
-df_n[1] <- df_SWLS$ID
-names(df_n) <- c("ID","Q1","Q2", "Q3", "Q4", "Q5")
+df_n[1] <- df_MSPSS$ID
+names(df_n) <- c("ID","Q1","Q2", "Q3", "Q4", "Q5","Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12")
 
 #Calculate Sum (total)
-SWLSSum <- 0
+MSPSave <- 0
 for(i in 1:nrow(df_n)){
-  SWLSSum[i] = sum(df_n[i, 2:6])
+  MSPSave[i] = sum(df_n[i, 2:13])/12
 }
 
-df_SWLS <- cbind(df_n, SWLSSum)
+df_MSPSS <- cbind(df_n, round(MSPSave,2))
+names(df_MSPSS)[14] <- "MSPSStotal_ave"
 
-# Create a histogram of EDS scores (total scores)
-mean(df_SWLS$SWLSSum,na.rm = TRUE)
-sd(df_SWLS$SWLSSum, na.rm = TRUE)
+# Create a histogram of MSPSS scores (total scores)
+mean(df_MSPSS$MSPSStotal_ave,na.rm = TRUE)
+sd(df_MSPSS$MSPSStotal_ave, na.rm = TRUE)
 #22.95122, 6.870048
 
-plot_SWLS <- ggplot(data = data.frame(df_SWLS = SWLSSum), aes(x = df_SWLS)) +
-  geom_histogram(breaks = seq(0, 40, by = 5),binwidth = 5, fill = "steelblue", color = "white") +
+plot_MSPSS <- ggplot(df_MSPSS, aes(x = MSPSStotal_ave)) +
+  geom_histogram(breaks = seq(0, 10, by = 0.55), binwidth = 0.5, fill = "steelblue", color = "white", width=1) +
   labs(
-    title = "Satisfaction with Life Scale (SWLS) ",
-    subtitle = "Range 5-35",
-    x = "mean = 22.95 (sd = 6.87) ",
+    title = "Multidimensional Scale of Perceived Social Support (MSPSS) ",
+    subtitle = "TOTAL (Range 1-7)",
+    x = "mean = 5.68 (sd = 1.10) ",
     y = "Frequency"
-  )
-print(plot_SWLS)
+  ) +
+  ylim(min=0, max=20)
+print(plot_MSPSS)
+
+# Calculate subscales
+#   1. Significant Other: Q1, 2, 5, 10  (sum then divide by 4)
+#   2. Family:            Q3, 4, 8, 11  (sum then divide by 4)
+#   3. Friends:           Q6, 7, 9, 12  (sum then divide by 4)
+df_MSPSS_SigOther <- df_MSPSS[, c("Q1","Q2", "Q5", "Q10")]
+df_MSPSS_Family <- df_MSPSS[, c("Q3","Q4", "Q8", "Q11")]
+df_MSPSS_Friends <- df_MSPSS[, c("Q6","Q7", "Q9", "Q12")]
+
+MSPSS_SigOther <- 0
+for(i in 1:nrow(df_MSPSS_SigOther)){
+  MSPSS_SigOther[i] = sum(df_MSPSS_SigOther[i, 1:4])/4
+}
+
+MSPSS_Family  <- 0
+for(i in 1:nrow(df_MSPSS_Family)){
+  MSPSS_Family[i] = sum(df_MSPSS_Family[i, 1:4])/4
+}
+
+MSPSS_Friend  <- 0
+for(i in 1:nrow(df_MSPSS_Friends)){
+  MSPSS_Friend[i] = sum(df_MSPSS_Friends[i, 1:4])/4
+}
+
+df_MSPSS <- cbind(df_MSPSS, MSPSS_SigOther,MSPSS_Family,MSPSS_Friend)
 
 #df_all <- cbind(df_all, df_SWLS[77])
 
+mean(df_MSPSS$MSPSS_SigOther,na.rm = TRUE)
+sd(MSPSS_SigOther,na.rm = TRUE)
+# 5.658537, 1.579909
+plot_MSPSS <- ggplot(df_MSPSS, aes(x = MSPSS_SigOther)) +
+  geom_histogram(breaks = seq(0, 10, by = 0.55), binwidth = 0.5, fill = "steelblue", color = "white", width=1) +
+  labs(
+    title = "Multidimensional Scale of Perceived Social Support (MSPSS) ",
+    subtitle = "Significant Other",
+    x = "mean = 5.66 (sd = 1.58) ",
+    y = "Frequency"
+  ) +
+  ylim(min=0, max=20)
+print(plot_MSPSS)
 
-##########################################
+mean(df_MSPSS$MSPSS_Family,na.rm = TRUE)
+sd(MSPSS_Family,na.rm = TRUE)
+#  5.390244,1.455645
+plot_MSPSS <- ggplot(df_MSPSS, aes(x = MSPSS_Family)) +
+  geom_histogram(breaks = seq(0, 10, by = 0.55), binwidth = 0.5, fill = "steelblue", color = "white", width=1) +
+  labs(
+    title = "Multidimensional Scale of Perceived Social Support (MSPSS) ",
+    subtitle = "Family",
+    x = "mean = 5.39 (sd = 1.46) ",
+    y = "Frequency"
+  ) +
+  ylim(min=0, max=20)
+print(plot_MSPSS)
+
+mean(df_MSPSS$MSPSS_Friend,na.rm = TRUE)
+sd(MSPSS_Friend,na.rm = TRUE)
+#  5.993902,1.194372
+plot_MSPSS <- ggplot(df_MSPSS, aes(x = MSPSS_Friend)) +
+  geom_histogram(breaks = seq(0, 10, by = 0.55), binwidth = 0.5, fill = "steelblue", color = "white", width=1) +
+  labs(
+    title = "Multidimensional Scale of Perceived Social Support (MSPSS) ",
+    subtitle = "Friend",
+    x = "mean = 5.99 (sd = 1.19) ",
+    y = "Frequency"
+  ) +
+  ylim(min=0, max=20)
+print(plot_MSPSS)
+
+
+
+####################################################################################
 # Chronic Strains
+#
+# 12 item
+# 3-Likert scale: Not true, Shomewhat true, very true, Does not apply to me
+####################################################################################
 
+desired_columns <- grep("Thinking about your life currently, are the statements below not true|ID", colnames(df), value = TRUE)
+
+# Subset the dataframe using the list of column names
+df_ChroStrain <- data.frame(df[, desired_columns, drop = FALSE])
+names(df_ChroStrain)
+names(df_ChroStrain) <- c("ID","Q1", "Q2", "Q3", "Q4", "Q5","Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12")
+
+all_values <- c(df_ChroStrain$Q1,df_ChroStrain$Q2,df_ChroStrain$Q3,df_ChroStrain$Q4,df_ChroStrain$Q5,
+                df_ChroStrain$Q6,df_ChroStrain$Q7,df_ChroStrain$Q8,df_ChroStrain$Q9,df_ChroStrain$Q10,
+                df_ChroStrain$Q11,df_ChroStrain$Q12)
+unique_values <- unique(all_values)
+print(unique_values)
+
+#scoring
+LEVELS = c("Not true",
+           "Somewhat true",
+           "Very true")
+
+df_n = data.frame(matrix(ncol = 13, nrow = 42))
+
+for(i in 1:13){
+  df_n[,i] = as.numeric(factor(df_ChroStrain[, i], levels =LEVELS)) #positive LEVEL
+}
+df_n[1] <- df_ChroStrain$ID
+names(df_n) <- c("ID","Q1","Q2", "Q3", "Q4", "Q5","Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12")
+
+#Calculate Sum (total)
+ChroStrain_total <- 0
+for(i in 1:nrow(df_n)){
+  ChroStrain_total[i] = sum(df_n[i, 2:13], na.rm=TRUE)
+}
+
+ChroStrain_total[1] <- "NA"
+ChroStrain_total <- as.numeric(ChroStrain_total)
+df_ChroStrain <- cbind(df_n, ChroStrain_total)
+
+# Create a histogram of MSPSS scores (total scores)
+mean(df_ChroStrain$ChroStrain_total,na.rm = TRUE)
+sd(df_ChroStrain$ChroStrain_total, na.rm = TRUE)
+#15.95122, 3.361184
+
+plot_ChroStrain <- ggplot(df_ChroStrain, aes(x = ChroStrain_total)) +
+  geom_histogram(fill = "steelblue", color = "white",binwidth = 2.5) +
+  labs(
+    title = "Chronic Strains",
+    x = "mean = 15.95 (sd = 3.36) ",
+    y = "Frequency"
+  ) 
+print(plot_ChroStrain)
 
 
 
