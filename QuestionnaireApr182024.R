@@ -1,48 +1,18 @@
+# Set up. Your working directory needs to be the top level of this repository.
 rm(list=ls())
+REPO_NAME = "PACQuestionnaires"
+cwd_name = basename(getwd())
+if (cwd_name != REPO_NAME) {
+    stop(paste0("Current working directory is ", cwd_name, " but needs to be ", REPO_NAME))
+}
+source("R/data.R")
+
+
+df = load_data()
+
 
 library("dplyr")
 library("ggplot2")
-#main_path <- "/Users/akiko/OneDrive - University of Pittsburgh/SeedProject/Analysis_Apr2024/" #Office
-#main_path <- "/Volumes/CEREBRO/Studies/NEMO2.0/Public/Analysis/misc/"
-main_path <- "/Users/akikomizuno/OneDrive - University of Pittsburgh/SeedProject/Analysis_Apr2024/" #home
-setwd(main_path)
-
-library("readxl")
-df <-read_excel("CGHP_21_62.xlsx")
-names(df)
-
-##########################################
-# Extract each questionnaires based on questions
-# Everyday Discrimination (EDS)
-# (no subscales, no reverse coding)
-##########################################
-
-# Assuming df is your dataframe containing your data
-# Replace 'df' with the name of your dataframe if it's different
-
-# List of column names to subset
-column_names <- c("Participant ID:",
-                  "You are treated with less courtesy than other people.",
-                  "You are treated with less respect than other people.",
-                  "You receive poorer service than other people at restaurants or stores.",
-                  "People act as if they think you are not smart.",
-                  "People act as if they are afraid of you.",
-                  "People act as if they think you are dishonest.",
-                  "People act as if they're better than you.",
-                  "You are called names or insulted.",
-                  "You are threatened or harassed.",
-                  "You are followed around in stores.",
-                  #"You are discriminated against.", ##### REMOVE
-                  "What do you think is the main reason for these experiences?")
-
-# Subset the dataframe using the list of column names
-df_EDS <- data.frame(df[, column_names, drop = FALSE])
-names(df_EDS) <- c("ID","Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11")
-
-# all_values <- c(EDQ_df$Q1, EDQ_df$Q2, EDQ_df$Q3, EDQ_df$Q4, EDQ_df$Q5, EDQ_df$Q6, EDQ_df$Q7, EDQ_df$Q8, EDQ_df$Q9, EDQ_df$Q10, EDQ_df$Q11)
-# unique_values <- unique(all_values)
-# print(unique_values)
-
 LEVELS = c(
   "Almost everyday", 
   "At least once a week",
