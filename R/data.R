@@ -26,10 +26,10 @@ NEW_NAMES = unlist(COLUMN_RENAMES)
 #' into your ~/Downloads directory.
 #'
 #' @param base.path Path to where the 
-load_data = function(data_path="~/Downloads/CGHP_21_62.xlsx"){
+load_data = function(data_path="~/Downloads/CGHP_21_63.xlsx"){
     # Load data
     library("readxl")
-    df <-readxl::read_excel("~/Downloads/CGHP_21_62.xlsx")
+    df <-readxl::read_excel("~/Downloads/CGHP_21_63.xlsx")
     
     # Select and rename the columns of interest
     df <- data.frame(df[, RAW_NAMES, drop = FALSE])
